@@ -1,16 +1,17 @@
-function isObject(item) {
-  return (
-    Object.getPrototypeOf(item) === Object.prototype && typeof item === "object"
-  );
-}
-
-function deepEqual(valueA, valueB) {
+export default function deepEqual(valueA, valueB) {
+  if (valueA === null || valueB === null) {
+    return valueA === valueB;
+  }
   if (typeof valueA !== typeof valueB) {
     return false;
   }
 
-  if (Array.isArray(valueA)) {
-    if (!Array.isArray(valueB) || valueB.length !== valueA.length) {
+  if (Array.isArray(valueA) !== Array.isArray(valueB)) {
+    return false;
+  }
+
+  if (Array.isArray(valueA) && Array.isArray(valueB)) {
+    if (valueB.length !== valueA.length) {
       return false;
     }
 
@@ -22,8 +23,8 @@ function deepEqual(valueA, valueB) {
     return true;
   }
 
-  if (isObject(valueA)) {
-    if (!isObject(valueB)) {
+  if (typeof valueA === "object") {
+    if (typeof valueB !== "object") {
       return false;
     }
 
@@ -48,42 +49,3 @@ function deepEqual(valueA, valueB) {
 
   return valueA === valueB;
 }
-
-const obj = {
-  1: 211,
-  2: 142,
-  3: [
-    124,
-    123,
-    {
-      123: 34,
-    },
-  ],
-};
-
-console.log(
-  deepEqual(
-    {
-      1: 211,
-      2: 142,
-      3: [
-        124,
-        123,
-        {
-          123: 34,
-        },
-      ],
-    },
-    {
-      1: 211,
-      2: 142,
-      3: [
-        124,
-        123,
-        {
-          123: 3,
-        },
-      ],
-    },
-  ),
-);

@@ -1,0 +1,103 @@
+Part 1: Problem Statements
+1. Container With Most Water
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the i-th line are (i, 0) and (i, height[i]). Find two lines that, together with the x-axis, form a container that contains the most water. Return the maximum amount of water a container can store.
+2. Product of Array Except Self
+Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. You must write an algorithm that runs in O(n) time and without using the division operator.
+3. Jump Game
+You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position. Return true if you can reach the last index, or false otherwise.
+4. Rotate Image (Matrix)
+You are given an n x n 2D matrix representing an image. Rotate the image by 90 degrees clockwise. You must modify the input 2D matrix in-place. Do not allocate another 2D matrix for the rotation.
+Part 2: Test Cases
+Try running your logic against these cases before checking the answers:
+Problem	Input	Expected Output
+1. Most Water	[1, 8, 6, 2, 5, 4, 8, 3, 7]	49
+1. Most Water	[1, 1]	1
+2. Product Except Self	[1, 2, 3, 4]	[24, 12, 8, 6]
+2. Product Except Self	[-1, 1, 0, -3, 3]	[0, 0, 9, 0, 0]
+3. Jump Game	[2, 3, 1, 1, 4]	true
+3. Jump Game	[3, 2, 1, 0, 4]	false
+4. Rotate Image	[[1,2,3],[4,5,6],[7,8,9]]	[[7,4,1],[8,5,2],[9,6,3]]
+Part 3: Optimized Solutions (JS)
+1. Container With Most Water (Two Pointers)
+javascript
+function maxArea(height) {
+  let max = 0;
+  let left = 0;
+  let right = height.length - 1;
+
+  while (left < right) {
+    let width = right - left;
+    let currentHeight = Math.min(height[left], height[right]);
+    max = Math.max(max, width * currentHeight);
+
+    // Move the pointer pointing to the shorter line
+    if (height[left] < height[right]) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return max;
+}
+Use code with caution.
+
+2. Product of Array Except Self (Prefix/Suffix)
+javascript
+function productExceptSelf(nums) {
+  const n = nums.length;
+  const res = new Array(n).fill(1);
+
+  // Left pass: calculate prefix products
+  let leftProduct = 1;
+  for (let i = 0; i < n; i++) {
+    res[i] = leftProduct;
+    leftProduct *= nums[i];
+  }
+
+  // Right pass: multiply by suffix products
+  let rightProduct = 1;
+  for (let i = n - 1; i >= 0; i--) {
+    res[i] *= rightProduct;
+    rightProduct *= nums[i];
+  }
+
+  return res;
+}
+Use code with caution.
+
+3. Jump Game (Greedy)
+javascript
+function canJump(nums) {
+  let goal = nums.length - 1;
+
+  // Work backwards: can we reach the current 'goal' from index i?
+  for (let i = nums.length - 2; i >= 0; i--) {
+    if (i + nums[i] >= goal) {
+      goal = i;
+    }
+  }
+
+  return goal === 0;
+}
+Use code with caution.
+
+4. Rotate Image (Transpose + Reverse)
+javascript
+function rotate(matrix) {
+  const n = matrix.length;
+
+  // 1. Transpose: Swap matrix[i][j] with matrix[j][i]
+  for (let i = 0; i < n; i++) {
+    for (let j = i; j < n; j++) {
+      [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+    }
+  }
+
+  // 2. Reverse each row
+  for (let i = 0; i < n; i++) {
+    matrix[i].reverse();
+  }
+  
+  return matrix;
+}
+Use code with caution.

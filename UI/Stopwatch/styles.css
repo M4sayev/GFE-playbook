@@ -1,0 +1,136 @@
+:root {
+  --clr-primary: #e9b8c9;
+  --clr-secondary: #5992c6;
+  --clr-accent: #0a2a92;
+  --clr-black: #31241f;
+}
+
+body {
+  font-family: fantasy;
+  height: 100dvh;
+  display: grid;
+  place-content: center;
+}
+
+.std-button {
+  border-radius: 0.5rem;
+  padding: 0.375rem 1rem;
+  background-color: var(--clr-primary);
+  border: none;
+
+  color: var(--clr-black);
+  font-weight: bold;
+
+  position: relative;
+
+  cursor: pointer;
+
+  box-shadow: 2px 2px 2px 2px rgba(0 0 0 / 0.2);
+
+  transition: 300ms ease all;
+}
+.std-button::before {
+  z-index: -10;
+  content: "";
+  position: absolute;
+  background-color: var(--clr-black);
+  height: 100%;
+  width: 100%;
+
+  border-radius: 0.5rem;
+  top: 2px;
+  left: 2px;
+}
+
+.std-button--danger {
+  background-color: rgb(186, 73, 73);
+}
+
+.std-button--success {
+  background-color: rgb(77, 156, 77);
+}
+
+.std-button--secondary {
+  background-color: var(--clr-secondary);
+  color: var(--clr-accent);
+}
+
+.stopwatch {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  gap: 1rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.stopwatch__display {
+  border: solid 0.2rem var(--clr-secondary);
+  border-radius: 50%;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+
+  display: grid;
+  place-content: center;
+}
+.display-wrapper button {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.display-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.stopwatch__display--animate {
+  animation: rotate 2s infinite ease;
+}
+
+.stopwatch__display::before {
+  width: 20px;
+  height: 20px;
+  content: "";
+  background-color: #5992c6;
+  position: absolute;
+  border-radius: 50%;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

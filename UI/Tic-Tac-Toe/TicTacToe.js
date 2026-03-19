@@ -48,7 +48,7 @@ export default function App() {
     setBoard(Array(9).fill(null));
     setCurrentMove(0);
     setWinner(null);
-    setWinningComb("");
+    setWinningComb(null);
   }
 
   const isDraw = currentMove === 9 && !winner;

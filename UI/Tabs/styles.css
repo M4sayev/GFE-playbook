@@ -1,0 +1,29 @@
+body {
+  font-family: sans-serif;
+}
+
+.tabs__btns {
+  border-radius: 0.375rem;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.tabs__btn {
+  padding: 0.375rem 1rem;
+  border: none;
+  background-color: lightgray;
+
+  cursor: pointer;
+
+  transition: 300ms ease all;
+}
+
+.tabs__btn[aria-selected="true"] {
+  background-color: gray;
+  color: white;
+}
+
+.tabs__btn:hover,
+.tabs__btn:focus-visible {
+  background-color: rgb(172, 167, 167);
+}

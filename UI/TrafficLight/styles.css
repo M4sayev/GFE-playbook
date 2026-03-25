@@ -1,0 +1,67 @@
+body {
+  font-family: sans-serif;
+  display: grid;
+  place-content: center;
+  height: 100dvh;
+}
+
+.traffic-light {
+  background-color: gray;
+
+  border: 2px solid black;
+  border-radius: 1rem;
+
+  padding: 0.5rem;
+
+  display: inline-flex;
+  gap: 0.375rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.traffic-light[data-variant="horizontal"] {
+  flex-direction: row;
+}
+.traffic-light[data-variant="vertical"] {
+  flex-direction: column;
+}
+
+.traffic-light[data-variant="horizontal"][data-reverse="true"] {
+  flex-direction: row-reverse;
+}
+.traffic-light[data-variant="vertical"][data-reverse="true"] {
+  flex-direction: column-reverse;
+}
+
+.traffic-light__light {
+  border-radius: 50%;
+  border: 2px solid black;
+
+  width: 30px;
+  height: 30px;
+
+  background-color: lightgray;
+
+  transition: 300ms ease all;
+}
+
+.traffic-light__light[data-color="green"].traffic-light__light--active {
+  background-color: rgb(48, 165, 48);
+}
+.traffic-light__light[data-color="yellow"].traffic-light__light--active {
+  background-color: rgb(232, 205, 66);
+}
+.traffic-light__light[data-color="red"].traffic-light__light--active {
+  background-color: rgb(205, 69, 69);
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: no-wrap;
+}

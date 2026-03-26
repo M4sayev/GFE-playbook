@@ -1,0 +1,40 @@
+body {
+  font-family: sans-serif;
+}
+
+.checkboxes {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.sr-only {
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  border: none;
+}
+
+.transfer-list {
+  display: flex;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  border-block: 1px solid gray;
+  padding: 1rem;
+}
+
+.controls button {
+  cursor: pointer;
+}

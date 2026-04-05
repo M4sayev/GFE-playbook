@@ -1,0 +1,65 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul,
+ol {
+  list-style: none;
+}
+
+body {
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+.arrow-down {
+  border: solid currentcolor;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  height: 8px;
+  pointer-events: none;
+  transform: translateY(-2px) rotate(45deg);
+  width: 8px;
+}
+
+.arrow-down--rotated {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.accordion__head {
+  width: 100%;
+  padding: 0.375rem;
+  margin-top: 1px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: none;
+  background-color: white;
+
+  cursor: pointer;
+
+  transition: 100ms background-color ease;
+}
+.accordion {
+  background-color: lightgray;
+}
+
+.accordion__head:focus-visible,
+.accordion__head:hover {
+  background-color: rgb(246, 244, 244);
+}
+
+.accordion__body {
+  padding-block: 0.5rem;
+  display: none;
+  background-color: white;
+}
+
+.accordion__body--active {
+  display: block;
+}

@@ -1,72 +1,114 @@
-import { useState } from "react";
-const items = [
-  {
-    id: 1,
-    label: "HTML",
-    description: `The HyperText Markup Language or HTML is the standard markup language
-          for documents designed to be displayed in a web browser.`,
-  },
-  {
-    id: 2,
-    label: "CSS",
-    description: `Cascading Style Sheets is a style sheet language used for describing
-          the presentation of a document written in a markup language such as
-          HTML or XML.`,
-  },
-  {
-    id: 3,
-    label: "JavaScript",
-    description: `JavaScript, often abbreviated as JS, is a programming language that is
-          one of the core technologies of the World Wide Web, alongside HTML and
-          CSS.`,
-  },
-];
-export default function Accordion() {
+import { createContext, useContext, useState, useId, Children } from "react";
+
+const AccordionItemContext = createContext(null);
+
+function AccordionItemProvider({ children }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const id = useId();
+
+  const accordionHeadID = `accordion-head-${id}`;
+  const accordionBodyID = `accordion-body-${id}`;
+
+  function toggleItem() {
+    setIsOpen((prev) => !prev);
+  }
+
+  const context = {
+    isOpen,
+    toggleItem,
+    accordionBodyID,
+    accordionHeadID,
+  };
+
   return (
-    <ul className="accordion">
-      {items.map((item) => {
-        return <AccordionItem key={item.id} {...item} />;
-      })}
-    </ul>
+    <AccordionItemContext.Provider value={context}>
+      {children}
+    </AccordionItemContext.Provider>
   );
 }
 
-function AccordionItem({ id, label, description }) {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+export function useAccordionItem() {
+  const context = useContext(AccordionItemContext);
 
-  function handleHeadClick() {
-    setIsCollapsed((prev) => !prev);
+  if (!context) {
+    throw new Error("Accordion* accordion items must be withing Accordion");
   }
 
-  const accordionBodyID = `accordion-body-${id}`;
-  const accordionHeadID = `accordion-head-${id}`;
+  return context;
+}
+export function Accordion({ children }) {
+  return <ul className="accordion">{children}</ul>;
+}
+
+function AccordionItem({ children }) {
+  function validate() {
+    let hasTrigger = false;
+    let hasBody = false;
+
+    Children.forEach(children, (child) => {
+      if (!child) return;
+      if (child.type === AccordionTrigger) {
+        hasTrigger = true;
+      }
+      if (child.type === AccordionBody) {
+        hasBody = true;
+      }
+    });
+
+    if (!hasTrigger) {
+      throw new Error("Accordion.Item must include Accordion.Trigger");
+    }
+
+    if (!hasBody) {
+      throw new Error("Accordion.Item must include Accordion.Body");
+    }
+
+    return true;
+  }
+
+  validate();
   return (
-    <li>
-      <h3>
-        <button
-          aria-label={`${isCollapsed ? "view" : "collapse"} the content of ${label}`}
-          aria-controls={accordionBodyID}
-          aria-expanded={!isCollapsed}
-          onClick={handleHeadClick}
-          className="accordion__head"
-          id={accordionHeadID}
-        >
-          {label}
-          <ArrowDown
-            aria-hidden={true}
-            className={!isCollapsed ? "arrow-down--rotated" : ""}
-          />
-        </button>
-      </h3>
-      <div
-        role="region"
-        aria-labelledby={accordionHeadID}
-        id={accordionBodyID}
-        className={`accordion__body ${!isCollapsed ? "accordion__body--active" : ""}`}
+    <AccordionItemProvider>
+      <li>{children}</li>
+    </AccordionItemProvider>
+  );
+}
+
+function AccordionTrigger({ children }) {
+  const { isOpen, toggleItem, accordionBodyID, accordionHeadID } =
+    useAccordionItem();
+  return (
+    <h3>
+      <button
+        aria-label={`${isOpen ? "collapse" : "view"} the content`}
+        aria-controls={accordionBodyID}
+        aria-expanded={isOpen}
+        onClick={toggleItem}
+        className="accordion__head"
+        id={accordionHeadID}
       >
-        {description}
-      </div>
-    </li>
+        {children}
+        <ArrowDown
+          aria-hidden={true}
+          className={isOpen ? "arrow-down--rotated" : ""}
+        />
+      </button>
+    </h3>
+  );
+}
+
+function AccordionBody({ children }) {
+  const { isOpen, accordionBodyID, accordionHeadID } = useAccordionItem();
+
+  return (
+    <div
+      role="region"
+      aria-labelledby={accordionHeadID}
+      id={accordionBodyID}
+      className={`accordion__body ${isOpen ? "accordion__body--active" : ""}`}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -74,3 +116,7 @@ function ArrowDown({ ...attributes }) {
   const { className, ...props } = attributes;
   return <span {...props} className={`arrow-down ${className}`} />;
 }
+
+Accordion.Item = AccordionItem;
+Accordion.Trigger = AccordionTrigger;
+Accordion.Body = AccordionBody;

@@ -1,6 +1,7 @@
 export default class EventEmitter {
+  #events;
   constructor() {
-    this.events = new Map();
+    this.#events = new Map();
   }
 
   /**
@@ -9,9 +10,9 @@ export default class EventEmitter {
    * @returns {EventEmitter}
    */
   on(eventName, listener) {
-    const listeners = this.events.get(eventName) ?? [];
-    listeners.push(listener);
-    this.events.set(eventName, listeners);
+    const arr = this.#events.get(eventName) ?? [];
+    arr.push(listener);
+    this.#events.set(eventName, arr);
     return this;
   }
 
@@ -21,10 +22,15 @@ export default class EventEmitter {
    * @returns {EventEmitter}
    */
   off(eventName, listener) {
-    const listeners = this.events.get(eventName) ?? [];
+    const listeners = this.#events.get(eventName) ?? [];
     const index = listeners.indexOf(listener);
+
+    if (index < 0) return this;
+
     const newListeners = listeners.filter((_, i) => index !== i);
-    this.events.set(eventName, newListeners);
+
+    this.#events.set(eventName, newListeners);
+
     return this;
   }
 
@@ -34,10 +40,12 @@ export default class EventEmitter {
    * @returns {boolean}
    */
   emit(eventName, ...args) {
-    const listeners = this.events.get(eventName);
+    const listeners = this.#events.get(eventName);
+
     if (!listeners || listeners.length < 1) return false;
 
-    listeners.forEach((l) => l(...args));
+    listeners.forEach((listener) => listener(...args));
+
     return true;
   }
 }

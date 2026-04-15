@@ -1,0 +1,75 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  pad: 0;
+}
+body {
+  font-family: sans-serif;
+  background-color: beige;
+}
+.wrapper {
+  padding: 1rem;
+}
+
+.jobs {
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+}
+h1 {
+    color: tomato;
+}
+.jobs {
+  padding: 0;
+}
+
+.job {
+  color: black;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.25);
+  border-radius: 0.375rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+
+  background-color: whitesmoke;
+}
+.job h2 {
+  font-size: 1rem;
+}
+
+.job__info {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.std-button {
+  background: tomato;
+  border-radius: 0.375rem;
+  padding: 0.375rem 1rem;
+  font-weight: bold;
+  color: whitesmoke;
+
+  cursor: pointer;
+
+  transition: 300ms ease all;
+  border: 2px solid tomato;
+}
+
+.std-button:hover,
+.std-button:focus-visible {
+  background-color: whitesmoke;
+  color: tomato;
+}
+
+.loader {
+  margin-bottom: 1rem;
+  font-size: 1.375rem;
+}

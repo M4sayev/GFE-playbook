@@ -1,9 +1,56 @@
-import { useState } from "react";
+import { useState, createContext, useId, useContext } from "react";
 
-function TabButton({ label, onClick, activeTab }) {
-  const isActive = activeTab === label;
-  const panelId = `panel-${label}`;
-  const tabId = `tab-${label}`;
+const TabContext = createContext(null);
+
+function TabContextProvider({ initialValue, children }) {
+  const [currentTab, setCurrentTab] = useState(initialValue);
+  const baseId = useId();
+
+  const context = {
+    currentTab,
+    setCurrentTab,
+    baseId,
+  };
+
+  return <TabContext.Provider value={context}>{children}</TabContext.Provider>;
+}
+
+function useTabContext() {
+  const context = useContext(TabContext);
+
+  if (!context) {
+    throw new Error("Tabs* items must be within tabs");
+  }
+
+  return context;
+}
+
+function Tabs({ children, initialValue, className = "", ...other }) {
+  return (
+    <TabContextProvider initialValue={initialValue}>
+      <div className={className} {...other}>
+        {children}
+      </div>
+    </TabContextProvider>
+  );
+}
+
+function TabsControls({ children, className = "", ...other }) {
+  return (
+    <div role="tablist" className={`tabs__btns ${className}`} {...other}>
+      {children}
+    </div>
+  );
+}
+
+function TabTrigger({ children, className = "", value, ...other }) {
+  const { baseId, currentTab, setCurrentTab } = useTabContext();
+  const isActive = currentTab === value;
+  const panelId = `${baseId}-panel-${value}`;
+  const tabId = `${baseId}-tab-${value}`;
+
+  const onClick = () => setCurrentTab(value);
+
   return (
     <button
       id={tabId}
@@ -11,61 +58,33 @@ function TabButton({ label, onClick, activeTab }) {
       aria-selected={isActive}
       aria-disabled={isActive}
       role="tab"
-      className={`tabs__btn ${isActive ? "tabs__btn--active" : ""}`}
+      className={`tabs__btn ${className}`}
       onClick={onClick}
+      {...other}
     >
-      {label}
+      {children}
     </button>
   );
 }
-
-function TabPanel({ label, activeTab, text }) {
-  const panelId = `panel-${label}`;
-  const tabId = `tab-${label}`;
-  const isActive = label === activeTab;
+function TabPanel({ children, className = "", value, ...other }) {
+  const { baseId, currentTab } = useTabContext();
+  const panelId = `${baseId}-panel-${value}`;
+  const tabId = `${baseId}-tab-${value}`;
+  const isActive = value === currentTab;
   return (
     <div
       id={panelId}
       role="tabpanel"
       aria-labelledby={tabId}
       hidden={!isActive}
+      {...other}
+      tabIndex={0}
     >
-      <p>{text}</p>
+      {children}
     </div>
   );
 }
-export default function Tabs({ config }) {
-  const [activeTab, setActiveTab] = useState(config[0].label);
 
-  return (
-    <div>
-      {/* tab buttons  */}
-      <div role="tablist" className="tabs__btns">
-        {config.map(({ label }) => {
-          return (
-            <TabButton
-              key={label}
-              activeTab={activeTab}
-              onClick={() => setActiveTab(label)}
-              label={label}
-            />
-          );
-        })}
-      </div>
+TabsControls.Trigger = TabTrigger;
 
-      {/* tabs */}
-      <div>
-        {config.map(({ label, text }) => {
-          return (
-            <TabPanel
-              key={`pabel-${label}`}
-              label={label}
-              text={text}
-              activeTab={activeTab}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+export { Tabs, TabPanel, TabsControls };

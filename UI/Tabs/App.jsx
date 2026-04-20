@@ -1,4 +1,4 @@
-import Tabs from "./Tabs";
+import { Tabs, TabPanel, TabsControls } from "./Tabs";
 
 export const config = [
   {
@@ -25,5 +25,28 @@ export const config = [
 ];
 
 export default function App() {
-  return <Tabs config={config} />;
+  return (
+    <Tabs initialValue={config[0].label}>
+      {/* tab buttons  */}
+      <TabsControls role="tablist" className="tabs__btns">
+        {config.map(({ label }) => {
+          return (
+            <TabsControls.Trigger key={label} value={label}>
+              {label}
+            </TabsControls.Trigger>
+          );
+        })}
+      </TabsControls>
+
+      {/* tabs */}
+
+      {config.map(({ label, text }) => {
+        return (
+          <TabPanel key={`panel-${label}`} value={label}>
+            {text}
+          </TabPanel>
+        );
+      })}
+    </Tabs>
+  );
 }

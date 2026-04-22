@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+}
+
+.checkboxes {
+  padding-left: 0.675rem;
+}
+
+.checkboxes__item {
+  padding: 0.1875rem;
+}
+
+.checkboxes__item label,
+.checkboxes__item input {
+  cursor: pointer;
+}

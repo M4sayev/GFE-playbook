@@ -1,0 +1,95 @@
+body {
+  font-family: sans-serif;
+  display: grid;
+  place-content: center;
+  height: 100dvh;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.todo {
+  text-align: center;
+}
+.todo h1 {
+  margin-bottom: 1rem;
+}
+
+.todo__input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo__input input {
+  width: 100%;
+  padding-inline-start: 0.375rem;
+  border-radius: 0.375rem;
+  border: 2px solid lightgray;
+}
+
+.std-btn {
+  border-radius: 0.375rem;
+  padding: 0.375rem 1rem;
+  border: none;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: rgb(105, 105, 213);
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  transition: 300ms solid ease;
+}
+.std-btn:focus-visible,
+.std-btn:hover {
+  opacity: 0.9;
+}
+
+.std-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.std-btn--danger {
+  background-color: rgb(164, 67, 67);
+}
+
+.std-btn--success {
+  background-color: rgb(69, 187, 69);
+}
+
+.todo__list {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.todo__item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sr-only {
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  border: none;
+}

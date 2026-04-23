@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="todo">
+      <h1>Todo List</h1>
+      <form class="todo__input" id="todoForm">
+        <label for="todo-id" class="sr-only">Todo name</label>
+
+        <input id="todo-id" type="text" placeholder="Enter your task" />
+
+        <button type="submit" class="std-btn std-btn--success">Submit</button>
+      </form>
+      <ul id="todoList" class="todo__list"></ul>
+      <div role="status" id="todoAnnouncer" class="sr-only"></div>
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>

@@ -5,32 +5,34 @@
 export default function classNames(
   ...args: any | Object | Array<any | Object | Array<any>>
 ): string {
-  let classes = [];
+  let classes: string[] = [];
 
-  for (const arg of args) {
-    if (!arg) continue;
+  function traverse(
+    args: any | Object | Array<any | Object | Array<any>>,
+    classes: string[],
+  ) {
+    for (const arg of args) {
+      if (!arg) continue;
 
-    const argType = typeof arg;
-
-    if (argType === "string" || argType === "number") {
-      classes.push(arg);
-      continue;
-    }
-
-    if (Array.isArray(arg)) {
-      classes.push(classNames(...arg));
-      continue;
-    }
-
-    if (typeof arg === "object") {
-      for (const key in arg) {
-        if (Object.hasOwn(arg, key) && arg[key]) {
-          classes.push(key);
-        }
+      if (Array.isArray(arg)) {
+        traverse(arg, classes);
+        continue;
       }
-      continue;
+
+      if (typeof arg === "object") {
+        for (const key in arg) {
+          if (Object.hasOwn(arg, key) && arg[key]) {
+            classes.push(key);
+          }
+        }
+        continue;
+      }
+
+      classes.push(arg);
     }
   }
+
+  traverse(args, classes);
 
   return classes.join(" ");
 }

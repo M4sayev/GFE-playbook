@@ -1,0 +1,47 @@
+body {
+  font-family: sans-serif;
+  padding: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+.star-icon {
+  --icon-size: 32px;
+
+  cursor: pointer;
+  height: var(--icon-size);
+  width: var(--icon-size);
+}
+
+.star-icon-filled {
+  fill: yellow;
+}
+
+.star-btn {
+  background-color: transparent;
+  border: none;
+
+  display: grid;
+  place-content: center;
+}
+
+.star-rating {
+  display: flex;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
